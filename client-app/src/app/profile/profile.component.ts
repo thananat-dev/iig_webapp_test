@@ -28,8 +28,6 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
-    private router: Router,
     private http: HttpClient,
     private userService: UserService
   ) {
@@ -84,6 +82,7 @@ export class ProfileComponent implements OnInit {
             this.loading = false;
             this.submitted = false;
             this.progress = 0;
+            this.message = "";
             this.loadUserInfoByUserId();
           })
         },
