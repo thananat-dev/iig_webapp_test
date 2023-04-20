@@ -1,0 +1,23 @@
+version: '3.4'
+
+services:
+  iig_pgsel_db:
+    container_name: iig_pgsel_db
+    environment:
+     - POSTGRES_USER=Administrator
+     - POSTGRES_PASSWORD=P@ssw0rd
+     - POSTGRES_DB=iig_pgsel_db
+    restart: always
+    ports:
+      - "5432:5432" 
+    volumes:
+      - postgres_data:/var/lib/postgresql/data 
+
+  iig_webapp_test:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings:WebApiDatabase=Server=iig_pgsel_db;Database=iig_pgsel_db;User Id=Administrator;Password=P@ssw0rd;"
+      - "AppSettings:Secret=THISISIIGTESTSECRET"
+    restart: always
+    ports:
+      - "7223:80"

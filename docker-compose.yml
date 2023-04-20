@@ -1,0 +1,14 @@
+version: '3.4'
+
+services:
+  iig_pgsel_db:
+    image: postgres
+
+  iig_webapp_test:
+    image: ${DOCKER_REGISTRY-}iigwebapptest
+    build:
+      context: .
+      dockerfile: iig_webapp_test/Dockerfile
+
+volumes:
+  postgres_data:

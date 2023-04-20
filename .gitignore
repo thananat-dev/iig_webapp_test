@@ -2,3 +2,4 @@ iig_webapp_test/bin/
 iig_webapp_test/obj/
 .vs/
 iig_webapp_test/wwwroot/Profile/
+obj/Docker/
