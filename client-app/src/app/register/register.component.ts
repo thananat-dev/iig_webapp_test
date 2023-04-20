@@ -89,6 +89,7 @@ export class RegisterComponent implements OnInit {
 
     this.profile_image = "";
     this.progress = 0;
+    this.error = "";
     // Check if file size is within limit
     if (fileToUpload.size > 5 * 1024 * 1024) {
       this.message = 'File size should not exceed 5MB.';

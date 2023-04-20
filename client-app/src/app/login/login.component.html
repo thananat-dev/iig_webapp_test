@@ -12,10 +12,15 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Password</label>
-                    <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" />
+                    <div class="input-group">
+                    <input type="{{ showPassword ? 'text' : 'password' }}" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" />
+                    <button type="button" class="btn btn-outline-secondary" (click)="toggleShowPassword()">
+                        <i class="fa fa-eye{{ showPassword ? '-slash' : '' }}"></i>
+                      </button>
                     <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
                         <div *ngIf="f['password'].errors['required']">Password is required</div>
                     </div>
+                </div>
                 </div>
                 <div class="d-grid gap-2 col-6 mx-auto">
                 <button [disabled]="loading" type="submit" class="btn btn-primary">

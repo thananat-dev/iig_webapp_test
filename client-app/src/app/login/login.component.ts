@@ -15,6 +15,7 @@ export class LoginComponent implements OnInit {
     loading = false;
     submitted = false;
     error = '';
+    showPassword: boolean = false;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -58,4 +59,8 @@ export class LoginComponent implements OnInit {
                 }
             });
     }
+
+    toggleShowPassword() {
+        this.showPassword = !this.showPassword;
+      }
 }
