@@ -18,6 +18,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - "ConnectionStrings:WebApiDatabase=Server=iig_pgsel_db;Database=iig_pgsel_db;User Id=Administrator;Password=P@ssw0rd;"
       - "AppSettings:Secret=THISISIIGTESTSECRET"
+      - "hostUrlPath=http://localhost:7223"
     restart: always
     ports:
       - "7223:80"
