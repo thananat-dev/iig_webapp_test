@@ -85,12 +85,42 @@ namespace iig_webapp_test.Services
             if (user == null)
                 throw new AppException("User '" + model.FirstName + "' not found");
 
-            user.Password = BCrypt.Net.BCrypt.HashPassword(model.NewPassword);
+            // hash password if not empty
+            if (!string.IsNullOrEmpty(model.NewPassword))
+            {
+                if (CheckOldFivePassword(userId, model.NewPassword, user.Password))
+                    user.Password = BCrypt.Net.BCrypt.HashPassword(model.NewPassword);
+            }
 
             // copy model to user and save
             _mapper.Map(model, user);
             _db.Users.Update(user);
             _db.SaveChanges();
+        }
+
+        // Repeat the password check for the last 5 password changes.
+        private bool CheckOldFivePassword(long userId, string newPassword, string oldPassword)
+        {
+            var changePasswordList = _db.ChangeUserPasswords.Where(x => x.UserId == userId).OrderBy(o => o.LastUpdate).ToList();
+            if (changePasswordList.Any(x => BCrypt.Net.BCrypt.Verify(newPassword, x.UserOldPassword)) || BCrypt.Net.BCrypt.Verify(newPassword, oldPassword))
+                throw new AppException("The password is the same as the last 5 passwords, please try again.");
+
+
+            if (changePasswordList.Count == 4) // Including the last password will equal 5 password changes.
+            {
+                changePasswordList[0].UserOldPassword = oldPassword;
+                changePasswordList[0].LastUpdate = DateTime.Now;
+            }
+            else
+            {
+                ChangeUserPassword changeUserPassword = new ChangeUserPassword();
+                changeUserPassword.UserId = userId;
+                changeUserPassword.UserOldPassword = oldPassword;
+                changeUserPassword.LastUpdate = DateTime.Now;
+                _db.ChangeUserPasswords.Add(changeUserPassword);
+            }
+            _db.SaveChanges();
+            return true;
         }
 
         private string generateJwtToken(User user)
