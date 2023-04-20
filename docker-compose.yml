@@ -10,5 +10,15 @@ services:
       context: .
       dockerfile: iig_webapp_test/Dockerfile
 
+  clientapp:
+    image: clientapp
+    build:
+      context: .
+      dockerfile: /client-app/DockerfileEnv
+    environment:
+      NODE_ENV: production
+    ports:
+      - 80:80
+
 volumes:
   postgres_data:

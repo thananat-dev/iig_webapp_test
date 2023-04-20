@@ -15,7 +15,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 // Configure DbContext 
 builder.Services.AddDbContext<DatabaseContext>(options =>
@@ -35,12 +34,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//using (var scope = app.Services.CreateScope())
-//{
-//    var dataContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
-//    dataContext.Database.Migrate();
-//}
-
 app.UseCors(x => x
        .AllowAnyOrigin()
        .AllowAnyMethod()
@@ -56,9 +49,6 @@ app.UseStaticFiles(new StaticFileOptions()
 
 app.UseMiddleware<JwtMiddleware>();
 app.UseMiddleware<ErrorHandlerMiddleware>();
-
-//app.UseHttpsRedirection();
-
 app.UseAuthorization();
 
 app.MapControllers();
