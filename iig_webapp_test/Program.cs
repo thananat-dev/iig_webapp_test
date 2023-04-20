@@ -12,6 +12,7 @@ builder.Services.AddSwaggerGen();
 
 // Configure DbContext 
 builder.Services.AddDbContext<DatabaseContext>();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // configure DI for application services
 builder.Services.AddScoped<IUserService, UserService>();
 
