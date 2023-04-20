@@ -7,6 +7,7 @@ namespace iig_webapp_test.Models
         [Required]
         [MinLength(6)]
         [MaxLength(12)]
+        [RegularExpression("^[A-Za-z0-9_]+$", ErrorMessage = "Username can only contain letters, numbers, and underscores.")]
         public string Username { get; set; }
         [Required]
         [MaxLength(60)]

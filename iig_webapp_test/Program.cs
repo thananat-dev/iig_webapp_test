@@ -11,6 +11,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 // Configure DbContext 
 builder.Services.AddDbContext<DatabaseContext>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -31,6 +33,7 @@ app.UseCors(x => x
        .AllowAnyMethod()
        .AllowAnyHeader());
 
+app.UseMiddleware<JwtMiddleware>();
 app.UseMiddleware<ErrorHandlerMiddleware>();
 
 app.UseHttpsRedirection();

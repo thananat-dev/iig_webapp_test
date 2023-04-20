@@ -24,6 +24,17 @@ namespace iig_webapp_test.Controllers
             return Ok(users);
         }
 
+        [HttpPost("authenticate")]
+        public IActionResult Authenticate(AuthenticateRequest model)
+        {
+            var response = _userService.Authenticate(model);
+
+            if (response == null)
+                return BadRequest(new { status = false, message = "Username or password is incorrect" });
+
+            return Ok(response);
+        }
+
         [HttpPost]
         public IActionResult Register(RegisterRequest model)
         {
