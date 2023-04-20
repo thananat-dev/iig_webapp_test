@@ -1,4 +1,5 @@
 using iig_webapp_test.Data;
+using iig_webapp_test.Helpers;
 using iig_webapp_test.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +25,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(x => x
+       .AllowAnyOrigin()
+       .AllowAnyMethod()
+       .AllowAnyHeader());
+
+app.UseMiddleware<ErrorHandlerMiddleware>();
 
 app.UseHttpsRedirection();
 
