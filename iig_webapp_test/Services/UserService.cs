@@ -18,6 +18,7 @@ namespace iig_webapp_test.Services
         void Register(RegisterRequest model);
         AuthenticateResponse Authenticate(AuthenticateRequest model);
         User? GetById(long id);
+        void UpdateProfile(long userId, UpdateProfileRequest model);
     }
     public class UserService:IUserService
     {
@@ -73,6 +74,22 @@ namespace iig_webapp_test.Services
 
             // save user
             _db.Users.Add(user);
+            _db.SaveChanges();
+        }
+
+        public void UpdateProfile(long userId, UpdateProfileRequest model)
+        {
+            var user = _db.Users.FirstOrDefault(x => x.UserId == userId);
+
+            // validate
+            if (user == null)
+                throw new AppException("User '" + model.FirstName + "' not found");
+
+            user.Password = BCrypt.Net.BCrypt.HashPassword(model.NewPassword);
+
+            // copy model to user and save
+            _mapper.Map(model, user);
+            _db.Users.Update(user);
             _db.SaveChanges();
         }
 

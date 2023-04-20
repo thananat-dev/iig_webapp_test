@@ -17,13 +17,6 @@ namespace iig_webapp_test.Controllers
             _userService = userService;
         }
 
-        [HttpGet]
-        public IActionResult GetAll()
-        {
-            var users = _userService.GetAll();
-            return Ok(users);
-        }
-
         [HttpPost("authenticate")]
         public IActionResult Authenticate(AuthenticateRequest model)
         {
@@ -35,11 +28,32 @@ namespace iig_webapp_test.Controllers
             return Ok(response);
         }
 
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            var users = _userService.GetAll();
+            return Ok(users);
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            var user = _userService.GetById(id);
+            return Ok(user);
+        }
+
         [HttpPost]
         public IActionResult Register(RegisterRequest model)
         {
             _userService.Register(model);
             return Ok(new { status = true, message = "User created" });
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateProfile(long id, UpdateProfileRequest model)
+        {
+            _userService.UpdateProfile(id, model);
+            return Ok(new { status = true, message = "User updated" });
         }
     }
 }
