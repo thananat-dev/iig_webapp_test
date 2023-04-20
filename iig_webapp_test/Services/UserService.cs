@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace iig_webapp_test.Services
 {
@@ -62,6 +63,8 @@ namespace iig_webapp_test.Services
 
         public void Register(RegisterRequest model)
         {
+            //if(IsPasswordValid(model.Password))
+            //    throw new AppException("Password must not be a sequence of letters or numbers.");
             // validate
             if (_db.Users.Any(x => x.Username == model.Username))
                 throw new AppException("User with the Username '" + model.Username + "' already exists");
@@ -76,6 +79,40 @@ namespace iig_webapp_test.Services
             _db.Users.Add(user);
             _db.SaveChanges();
         }
+
+        public static bool IsPasswordValid(string password)
+        {
+            bool isValid = Regex.IsMatch(password, @"^(?=.*[a-zA-Z])(?=.*\d)(?!.*(.)\1{2}).{6,}$");
+            return !isValid;
+        }
+
+        private static bool IsPasswordSequential(string password)
+        {
+            bool isSequential = false;
+            for (int i = 0; i < password.Length - 1; i++)
+            {
+                if (char.IsDigit(password[i]) && char.IsDigit(password[i + 1]))
+                {
+                    int currentNumber = int.Parse(password[i].ToString());
+                    int nextNumber = int.Parse(password[i + 1].ToString());
+                    if (nextNumber - currentNumber == 1 || nextNumber - currentNumber == -1)
+                    {
+                        isSequential = true;
+                        break;
+                    }
+                }
+                else if (char.IsLetter(password[i]) && char.IsLetter(password[i + 1]))
+                {
+                    if ((password[i] + 1) == password[i + 1] || (password[i] - 1) == password[i + 1])
+                    {
+                        isSequential = true;
+                        break;
+                    }
+                }
+            }
+            return isSequential;
+        }
+
 
         public void UpdateProfile(long userId, UpdateProfileRequest model)
         {

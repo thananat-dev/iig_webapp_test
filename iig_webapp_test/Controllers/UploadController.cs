@@ -18,13 +18,12 @@ namespace iig_webapp_test.Controllers
             _configuration = configuration;
         }
 
-        [Authorize]
+        
         [HttpPost, DisableRequestSizeLimit]
         public async Task<IActionResult> UploadAsync()
         {
             try
             {
-                var authen_user = (User)HttpContext.Items["User"];
                 var formCollection = await Request.ReadFormAsync();
                 var file = formCollection.Files.FirstOrDefault();
                 var type = formCollection["type"].FirstOrDefault();
@@ -40,7 +39,7 @@ namespace iig_webapp_test.Controllers
                 if (file.Length > 5 * 1024 * 1024)
                     throw new AppException("File size should not exceed 5MB.");
 
-                var folderName = Path.Combine("wwwroot", type, authen_user.Username);
+                var folderName = Path.Combine("wwwroot", type);
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
 
                 if (!Directory.Exists(pathToSave))

@@ -18,6 +18,7 @@ namespace iig_webapp_test.Models
         public string ProfileImage { get; set; }
         [Required]
         [MinLength(6)]
+        [RegularExpression(@"^(?=.*[a-zA-Z])(?=.*\d)(?!.*(.)\1{2}).{6,}$", ErrorMessage = "Password must not be a sequence of letters or numbers.")]
         public string Password { get; set; }
     }
 }

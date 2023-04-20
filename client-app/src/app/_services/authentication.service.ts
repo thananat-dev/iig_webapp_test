@@ -24,6 +24,17 @@ export class AuthenticationService {
         return this.userSubject.value;
     }
 
+    
+    register(addUserRequest:any) {
+        const headers = { 'Content-Type': 'application/json', };
+        return this.http.post<any>(`${environment.apiUrl}/api/Users`, addUserRequest, { headers: headers,responseType:"json" })
+            .pipe(map(res => {
+                console.log("addUser",res);
+                
+                return res;
+            }));
+    }
+
     login(username: string, password: string) {
         return this.http.post<any>(`${environment.apiUrl}/api/Users/authenticate`, { username, password })
             .pipe(map(user => {
