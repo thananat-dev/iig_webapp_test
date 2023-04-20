@@ -1,4 +1,5 @@
 ﻿using iig_webapp_test.Entities;
+using iig_webapp_test.Helpers;
 using iig_webapp_test.Models;
 using iig_webapp_test.Services;
 using Microsoft.AspNetCore.Http;
@@ -35,10 +36,12 @@ namespace iig_webapp_test.Controllers
             return Ok(users);
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        [Authorize]
+        [HttpGet("getProfile")]
+        public IActionResult GetById()
         {
-            var user = _userService.GetById(id);
+            var authen_user = (User)HttpContext.Items["User"];
+            var user = _userService.GetById(authen_user.UserId);
             return Ok(user);
         }
 
@@ -49,10 +52,13 @@ namespace iig_webapp_test.Controllers
             return Ok(new { status = true, message = "User created" });
         }
 
-        [HttpPut("{id}")]
-        public IActionResult UpdateProfile(long id, UpdateProfileRequest model)
+        [Authorize]
+        [HttpPut]
+        public IActionResult UpdateProfile(UpdateProfileRequest model)
         {
-            _userService.UpdateProfile(id, model);
+            //_userService.UpdateProfile(id, model);
+            var authen_user = (User)HttpContext.Items["User"];
+            _userService.UpdateProfile(authen_user.UserId, model);
             return Ok(new { status = true, message = "User updated" });
         }
     }
