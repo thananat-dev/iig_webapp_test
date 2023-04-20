@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthenticationService } from '../_services/authentication.service';
 import { first } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpEventType } from '@angular/common/http';
+import Swal from 'sweetalert2';
+import { UserService } from '../_services/user.service';
 
 @Component({
   selector: 'app-register',
@@ -28,7 +29,7 @@ export class RegisterComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private http: HttpClient,
-    private authenticationService: AuthenticationService
+    private userService: UserService
   ) {
 
   }
@@ -56,12 +57,22 @@ export class RegisterComponent implements OnInit {
 
     this.error = '';
     this.loading = true;
-    this.authenticationService.register(this.registerForm.value)
+    this.userService.register(this.registerForm.value)
       .pipe(first())
       .subscribe({
         next: () => {
-          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-          this.router.navigate([returnUrl]);
+          Swal.fire({
+            title: 'Success!',
+            text: "go to the login page!",
+            icon: 'success',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'OK'
+          }).then((result) => {
+
+            const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+            this.router.navigate([returnUrl]);
+          })
         },
         error: error => {
           this.error = error;

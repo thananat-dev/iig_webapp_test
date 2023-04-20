@@ -1,1 +1,82 @@
-<p>profile works!</p>
+<div class="col-md-6 offset-md-3 mt-5">
+    <div class="card">
+        <h4 class="card-header py-3 ">Profile</h4>
+        <div class="card-body">
+            <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+                <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    <input type="text" [value]="UserProfile.username ?? ''" class="form-control" disabled />
+
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">New Password</label>
+                    <div class="input-group">
+                    <input type="{{ showPassword ? 'text' : 'password' }}" formControlName="newPassword" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f['newPassword'].errors }" autocomplete="new-password"/>
+                        <button type="button" class="btn btn-outline-secondary" (click)="toggleShowPassword()">
+                            <i class="fa fa-eye{{ showPassword ? '-slash' : '' }}"></i>
+                          </button>
+                          <div *ngIf="submitted && f['newPassword'].errors  && f['newPassword'].errors" class="invalid-feedback">
+                            <!-- <div *ngIf="f['newPassword'].errors['required']">Password is required</div> -->
+                            <div *ngIf="f['newPassword'].errors['minlength']">Password must be at least 6 characters</div>
+                            <div *ngIf="f['newPassword'].errors['pattern']">Password must not be a sequence of letters or numbers.</div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">First Name</label>
+                    <input type="firstname" formControlName="firstname" [value]="UserProfile.firstName ?? ''" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f['firstname'].errors }" />
+                    <div *ngIf="submitted && f['firstname'].errors && f['firstname'].errors" class="invalid-feedback">
+                        <div *ngIf="f['firstname'].errors['required']">First Name is required</div>
+                        <div *ngIf="f['firstname'].errors['maxlength']">First Name cannot be more than 60 characters</div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Last Name</label>
+                    <input type="lastname" formControlName="lastname" [value]="UserProfile.lastName ?? ''" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f['lastname'].errors }" />
+                    <div *ngIf="submitted && f['lastname'].errors && f['lastname'].errors" class="invalid-feedback">
+                        <div *ngIf="f['lastname'].errors['maxlength']">Last Name cannot be more than 60 characters</div>
+                    </div>
+                </div>
+
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="inputGroupFile01">Profile Image</label>
+                    <input type="file" class="form-control" #file (change)="uploadFile(file.files)">
+                  </div>
+  
+                <div class="col-lg-12 text-center">
+                    <div class="profile-photo" *ngIf="progress == 0">
+                        <img src="{{ UserProfile.profileImage }}" width="100" class="img-fluid rounded-circle" alt="" />
+                    </div>
+                    <div class="profile-photo" *ngIf="progress > 99">
+                        <img src="{{ profile_image }}" width="100" class="img-fluid rounded-circle" alt="" />
+                    </div>
+                    <br />
+    
+                    <span *ngIf="progress > 0">
+                        <div class="progress">
+                          <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': progress + '%' }"
+                               [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                      </span>
+                    <span class="upload" *ngIf="message">
+                        {{ message }}
+                    </span>
+                </div>
+                <div class="d-grid gap-2 col-6 mx-auto">
+                    <button [disabled]="loading" class="btn btn-primary">
+                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                        Update
+                    </button>
+                    <!-- <button type="button" class="btn bt btn-warning" routerLink="/login" routerLinkActive="active">
+                        Back
+                    </button> -->
+                </div>
+                <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
+            </form>
+        </div>
+    </div>
+</div>

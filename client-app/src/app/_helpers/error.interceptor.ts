@@ -3,7 +3,7 @@ import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/c
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AuthenticationService } from '../_services/authentication.service';
-
+import Swal from 'sweetalert2';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -17,6 +17,12 @@ export class ErrorInterceptor implements HttpInterceptor {
             }
 
             const error = err.error.message || JSON.stringify(err.error.errors) || err.message ;
+            Swal.fire({
+                icon: 'error',
+                // title: error,
+                html: '<h3>'+error+'</h3>',
+                // text: error,
+              })
             return throwError(error);
         }))
     }
