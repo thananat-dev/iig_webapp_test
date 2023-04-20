@@ -6,7 +6,6 @@ import { first } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 import { UserService } from '../_services/user.service';
-import { Profile } from '../_models/profile';
 
 @Component({
   selector: 'app-profile',
