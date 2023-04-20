@@ -7,7 +7,7 @@ You can build  apps that package the server to run locally :
     * To clone project :
         * `git clone https://github.com/thananat-dev/iig_webapp_test.git`
     
-    * To build it for your current architecture:
+    * To change directory to iig_webapp_test:
         * `cd iig_webapp_test`
      
     * To build it with `docker-compose`:
